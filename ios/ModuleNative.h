@@ -1,6 +1,6 @@
-
+#import <React/RCTEventEmitter.h>
 #import "generated/RNModuleNativeSpec/RNModuleNativeSpec.h"
 
-@interface ModuleNative : NSObject <NativeModuleNativeSpec>
+@interface ModuleNative : RCTEventEmitter <NativeModuleNativeSpec>
 
 @end
