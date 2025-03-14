@@ -67,10 +67,10 @@ class ModuleNativeModule(reactContext: ReactApplicationContext) :
       .emit("onModeChanged",value)
   }
 
-  private fun sendBrightnessChanged(value:Double){
+  private fun sendBrightnessApp(value:Double){
     reactApplicationContext
       .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-      .emit("onBrightnessAppChanged",value)
+      .emit("onBrightnessApp",value)
   }
   override fun setBrightnessDevice(value: Double) {
     val context = reactApplicationContext
@@ -101,7 +101,7 @@ class ModuleNativeModule(reactContext: ReactApplicationContext) :
       val layoutParams = window.attributes
       layoutParams.screenBrightness = value.toFloat()
       window.attributes = layoutParams
-      sendBrightnessChanged(value.toFloat())
+      sendBrightnessApp(value)
     }
   }
 
@@ -113,7 +113,7 @@ class ModuleNativeModule(reactContext: ReactApplicationContext) :
   override fun setVolume(value: Double) {
     val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)
     val targetVolume = (value * maxVolume).toInt().coerceIn(0, maxVolume)
-    audioManager.setStreamVolume(AudioManager.STREAM_RING, targetVolume, AudioManager.FLAG_PLAY_SOUND)
+    audioManager.setStreamVolume(AudioManager.STREAM_RING, targetVolume, 0)
   }
 
   override fun getVolume(): Double {
@@ -125,7 +125,7 @@ class ModuleNativeModule(reactContext: ReactApplicationContext) :
   override fun setVolumeNotify(value: Double) {
     val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION)
     val targetVolume = (value * maxVolume).toInt().coerceIn(0, maxVolume)
-    audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, targetVolume, AudioManager.FLAG_PLAY_SOUND)
+    audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, targetVolume, 0)
   }
 
   override fun getVolumeNotify(): Double {
@@ -137,7 +137,7 @@ class ModuleNativeModule(reactContext: ReactApplicationContext) :
   override fun setVolumeSystem(value: Double) {
     val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM)
     val targetVolume = (value * maxVolume).toInt().coerceIn(0, maxVolume)
-    audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, targetVolume, AudioManager.FLAG_PLAY_SOUND)
+    audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, targetVolume, 0)
   }
 
   override fun getVolumeSystem(): Double {
@@ -149,7 +149,7 @@ class ModuleNativeModule(reactContext: ReactApplicationContext) :
   override fun setVolumeMedia(value: Double) {
     val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
     val targetVolume = (value * maxVolume).toInt().coerceIn(0, maxVolume)
-    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, targetVolume, AudioManager.FLAG_PLAY_SOUND)
+    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, targetVolume, 0)
   }
 
   override fun getVolumeMedia(): Double {

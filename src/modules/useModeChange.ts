@@ -6,10 +6,8 @@ export function useModeChange() {
   const [state, setState] = useState<string>(ModeTheme.getModeApp() || 'light');
 
   useEffect(() => {
-    const ReactNativeEmitter = new NativeEventEmitter(
-      NativeModules.ModuleNative
-    );
-    const sub = ReactNativeEmitter.addListener('onModeChanged', setState);
+    const Emitter = new NativeEventEmitter(NativeModules.ModuleNative);
+    const sub = Emitter.addListener('onModeChanged', setState);
 
     return () => {
       sub.remove();

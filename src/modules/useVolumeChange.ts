@@ -5,13 +5,8 @@ export function useVolumeChange() {
   const [volumeChange, setVolumeChange] = useState<number>(0);
 
   useEffect(() => {
-    const ReactNativeEmitter = new NativeEventEmitter(
-      NativeModules.ModuleNative
-    );
-    const sub = ReactNativeEmitter.addListener(
-      'onVolumeChanged',
-      setVolumeChange
-    );
+    const Emitter = new NativeEventEmitter(NativeModules.ModuleNative);
+    const sub = Emitter.addListener('onVolumeChanged', setVolumeChange);
 
     return () => {
       sub.remove();

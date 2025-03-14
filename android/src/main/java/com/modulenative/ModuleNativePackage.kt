@@ -22,10 +22,11 @@ class ModuleNativePackage : BaseReactPackage() {
       moduleInfos[ModuleNativeModule.NAME] = ReactModuleInfo(
         ModuleNativeModule.NAME,
         ModuleNativeModule.NAME,
-        false,  // canOverrideExistingModule
-        false,  // needsEagerInit
-        false,  // isCxxModule
-        true // isTurboModule
+        canOverrideExistingModule = false,  // canOverrideExistingModule
+        needsEagerInit = false,  // needsEagerInit
+        hasConstants = true,
+        isCxxModule = false,  // isCxxModule
+        isTurboModule = true // isTurboModule
       )
       moduleInfos
     }
