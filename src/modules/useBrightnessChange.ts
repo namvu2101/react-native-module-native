@@ -6,13 +6,8 @@ export function useBrightnessChange() {
   const [state, setState] = useState<number>(Brightness.getBrightness() || 0);
 
   useEffect(() => {
-    const ReactNativeEmitter = new NativeEventEmitter(
-      NativeModules.ModuleNative
-    );
-    const bright = ReactNativeEmitter.addListener(
-      'onBrightnessChanged',
-      setState
-    );
+    const Emitter = new NativeEventEmitter(NativeModules.ModuleNative);
+    const bright = Emitter.addListener('onBrightnessChanged', setState);
 
     return () => {
       bright.remove();

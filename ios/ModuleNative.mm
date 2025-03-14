@@ -3,6 +3,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTUtils.h>
 #import "generated/RNModuleNativeSpec/RNModuleNativeSpec.h"
+#import <React/RCTEventEmitter.h>
 
 @implementation ModuleNative {
   float _lastVolume;

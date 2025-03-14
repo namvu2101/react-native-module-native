@@ -67,10 +67,10 @@ class ModuleNativeModule(reactContext: ReactApplicationContext) :
       .emit("onModeChanged",value)
   }
 
-  private fun sendBrightnessChanged(value:Double){
+  private fun sendBrightnessApp(value:Double){
     reactApplicationContext
       .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-      .emit("onBrightnessAppChanged",value)
+      .emit("onBrightnessApp",value)
   }
   override fun setBrightnessDevice(value: Double) {
     val context = reactApplicationContext
@@ -101,7 +101,7 @@ class ModuleNativeModule(reactContext: ReactApplicationContext) :
       val layoutParams = window.attributes
       layoutParams.screenBrightness = value.toFloat()
       window.attributes = layoutParams
-      sendBrightnessChanged(value.toFloat())
+      sendBrightnessApp(value)
     }
   }
 
