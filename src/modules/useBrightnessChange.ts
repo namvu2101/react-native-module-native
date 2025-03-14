@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Brightness, Emitter } from '.';
+import { Brightness } from '.';
+import { NativeEventEmitter, NativeModules } from 'react-native';
 
 export function useBrightnessChange() {
-  const [state, setState] = useState<number>(Brightness.getBrightness());
+  const [state, setState] = useState<number>(Brightness.getBrightness() || 0);
 
   useEffect(() => {
-    const bright = Emitter.addListener('onBrightnessChanged', setState);
+    const ReactNativeEmitter = new NativeEventEmitter(
+      NativeModules.ModuleNative
+    );
+    const bright = ReactNativeEmitter.addListener(
+      'onBrightnessChanged',
+      setState
+    );
 
     return () => {
       bright.remove();

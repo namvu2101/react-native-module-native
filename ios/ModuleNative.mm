@@ -1,9 +1,29 @@
 #import "ModuleNative.h"
+#import <AVFoundation/AVFoundation.h>
+#import <React/RCTBridge.h>
+#import <React/RCTUtils.h>
+#import "generated/RNModuleNativeSpec/RNModuleNativeSpec.h"
 
 @implementation ModuleNative {
   float _lastVolume;
 }
+
 RCT_EXPORT_MODULE()
+
+// MARK: - Lifecycle
+
+- (instancetype)init {
+  if (self = [super init]) {
+    [self observeVolumeChanges];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+// MARK: - Brightness
 
 - (void)setBrightnessDevice:(double)value {
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -15,35 +35,40 @@ RCT_EXPORT_MODULE()
   return @([UIScreen mainScreen].brightness);
 }
 
+- (NSNumber *)getBrightness {
+  return @([UIScreen mainScreen].brightness);
+}
+
 - (void)setBrightness:(double)value {
   dispatch_async(dispatch_get_main_queue(), ^{
     [UIScreen mainScreen].brightness = (CGFloat)value;
   });
 }
 
-- (NSNumber *)getBrightness {
-  return @([UIScreen mainScreen].brightness);
-}
+// MARK: - Volume
 
 - (void)setVolume:(double)value {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [UIScreen mainScreen].brightness = (CGFloat)value;
-  });
+  // iOS không cho phép set volume trực tiếp bằng API công khai
+  // Giải pháp thường là dùng MPVolumeView ẩn hoặc AVPlayer workaround
+  // Tạm thời placeholder để tránh nhầm lẫn
+  NSLog(@"setVolume is not directly supported on iOS.");
 }
 
 - (NSNumber *)getVolume {
   return @([AVAudioSession sharedInstance].outputVolume);
 }
-- (NSArray<NSString *> *)supportedEvents {
-  return @[@"onVolumeChanged"];
+
+// MARK: - Mode
+
+- (void)setModeApp:(NSString *)mode {
+  // Placeholder nếu muốn xử lý theme sau
 }
 
-- (instancetype)init {
-  if (self = [super init]) {
-    [self observeVolumeChanges];
-  }
-  return self;
+- (NSString *)getModeApp {
+  return @"dark"; // hoặc @"light"
 }
+
+// MARK: - Observe Volume Changes
 
 - (void)observeVolumeChanges {
   AVAudioSession *session = [AVAudioSession sharedInstance];
@@ -65,24 +90,53 @@ RCT_EXPORT_MODULE()
   }
 }
 
-- (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-RCT_EXPORT_METHOD(addListener:(NSString *)eventName)
-{
-  // No-op
+// MARK: - NativeEventEmitter Support
+
+- (NSArray<NSString *> *)supportedEvents {
+  return @[@"onVolumeChanged"];
 }
 
-RCT_EXPORT_METHOD(removeListeners:(double)count)
-{
-  // No-op
+- (void)addListener:(NSString *)eventName {
+  // Bắt buộc implement để tránh warning
 }
 
+- (void)removeListeners:(double)count {
+  // Bắt buộc implement để tránh warning
+}
+
+- (nonnull NSNumber *)getVolumeMedia {
+  return @([AVAudioSession sharedInstance].outputVolume);
+}
+
+
+- (nonnull NSNumber *)getVolumeNotify {
+  return @([AVAudioSession sharedInstance].outputVolume);
+
+}
+
+
+- (nonnull NSNumber *)getVolumeSystem {
+  return @([AVAudioSession sharedInstance].outputVolume);
+}
+
+
+- (void)setVolumeMedia:(double)value { 
+}
+
+
+- (void)setVolumeNotify:(double)value { 
+}
+
+
+- (void)setVolumeSystem:(double)value { 
+}
+
+
+// MARK: - TurboModule (New Architecture)
 
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-    (const facebook::react::ObjCTurboModule::InitParams &)params
-{
-    return std::make_shared<facebook::react::NativeModuleNativeSpecJSI>(params);
+  (const facebook::react::ObjCTurboModule::InitParams &)params {
+  return std::make_shared<facebook::react::NativeModuleNativeSpecJSI>(params);
 }
 
 @end

@@ -1,8 +1,4 @@
-import { NativeEventEmitter, NativeModules } from 'react-native';
 import ModuleNative from '../NativeModuleNative';
-import { useBrightnessChange } from './useBrightnessChange';
-import { useModeChange } from './useModeChange';
-import { useVolumeChange } from './useVolumeChange';
 
 const {
   setBrightnessDevice,
@@ -37,17 +33,11 @@ export const Volume = {
   getVolumeSystem,
 };
 
-export const Emitter = new NativeEventEmitter(NativeModules.MyNewArchitect);
-
 export const ModeTheme = {
   getModeApp,
   setModeApp,
 };
 
-export function useGetValueChange() {
-  const volumeChange = useVolumeChange();
-  const brightnessChange = useBrightnessChange();
-  const modeChange = useModeChange();
-
-  return { volumeChange, brightnessChange, modeChange };
-}
+export * from './useBrightnessChange';
+export * from './useVolumeChange';
+export * from './useModeChange';
