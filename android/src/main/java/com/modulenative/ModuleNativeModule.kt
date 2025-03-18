@@ -52,6 +52,17 @@ class ModuleNativeModule(reactContext: ReactApplicationContext) :
   }
 
   @RequiresApi(Build.VERSION_CODES.S)
+  override fun onChangeMode() {
+    val mode = getModeApp()
+    if(mode == "dark"){
+      setModeApp("light")
+    }
+    else{
+      setModeApp("dark")
+    }
+  }
+
+  @RequiresApi(Build.VERSION_CODES.S)
   override fun setModeApp(mode: String) {
     if(mode == "dark"){
       uiModeManager.setApplicationNightMode(UiModeManager.MODE_NIGHT_YES)

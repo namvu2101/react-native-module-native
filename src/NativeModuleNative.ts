@@ -16,6 +16,7 @@ export interface Spec extends TurboModule {
   removeListeners(count: number): void;
   getModeApp(): 'dark' | 'light';
   setModeApp(mode: 'dark' | 'light'): void;
+  onChangeMode(): void;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('ModuleNative');

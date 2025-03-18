@@ -62,12 +62,61 @@ RCT_EXPORT_MODULE()
 // MARK: - Mode
 
 - (void)setModeApp:(NSString *)mode {
-  // Placeholder nếu muốn xử lý theme sau
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIUserInterfaceStyle style = UIUserInterfaceStyleUnspecified;
+
+        if ([mode isEqualToString:@"dark"]) {
+            style = UIUserInterfaceStyleDark;
+        } else if ([mode isEqualToString:@"light"]) {
+            style = UIUserInterfaceStyleLight;
+        }
+
+        if (@available(iOS 13.0, *)) {
+            UIWindow *keyWindow = nil;
+            for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes) {
+                if (windowScene.activationState == UISceneActivationStateForegroundActive) {
+                    keyWindow = windowScene.windows.firstObject;
+                    break;
+                }
+            }
+            if (keyWindow != nil) {
+                keyWindow.overrideUserInterfaceStyle = style;
+            }
+        }
+    });
 }
 
+
+
 - (NSString *)getModeApp {
-  return @"dark"; // hoặc @"light"
+    UIUserInterfaceStyle style = UIUserInterfaceStyleUnspecified;
+
+    if (@available(iOS 13.0, *)) {
+        UIWindow *keyWindow = nil;
+        for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes) {
+            if (windowScene.activationState == UISceneActivationStateForegroundActive) {
+                keyWindow = windowScene.windows.firstObject;
+                break;
+            }
+        }
+        if (keyWindow != nil) {
+            style = keyWindow.traitCollection.userInterfaceStyle;
+        }
+    }
+
+    return (style == UIUserInterfaceStyleDark) ? @"dark" : @"light";
 }
+
+
+- (void)onChangeMode {
+    NSString *currentMode = [self getModeApp];
+    if ([currentMode isEqualToString:@"dark"]) {
+        [self setModeApp:@"light"];
+    } else {
+        [self setModeApp:@"dark"];
+    }
+}
+
 
 // MARK: - Observe Volume Changes
 

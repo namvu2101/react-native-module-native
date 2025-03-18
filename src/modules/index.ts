@@ -14,6 +14,7 @@ const {
   getVolumeSystem,
   setModeApp,
   getModeApp,
+  onChangeMode,
 } = ModuleNative;
 
 export const Brightness = {
@@ -36,6 +37,7 @@ export const Volume = {
 export const ModeTheme = {
   getModeApp,
   setModeApp,
+  onChangeMode,
 };
 
 export * from './useBrightnessChange';
